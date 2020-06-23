@@ -1,0 +1,42 @@
+---
+version: '3.8'
+
+volumes:
+  data-node-1:
+  data-node-2:
+  data-node-3:
+  commit-node-1:
+  commit-node-2:
+  commit-node-3:
+
+services:
+
+  scylla-node-1:
+    name: scylla-node-1
+    image: scylladb/scylla
+    command: --memory 1G --smp 1 --listen-address scylla-node-1
+    volumes:
+    - data-node-1:/var/lib/scylla/data
+    - commit-node-1:/var/lib/scylla/commitlog
+
+  scylla-node-2:
+    name: scylla-node-2
+    image: scylladb/scylla
+    command: --memory 1G --seeds scylla-node-1 --smp 1 --listen-address scylla-node-2
+    volumes:
+    - data-node-2:/var/lib/scylla/data
+    - commit-node-2:/var/lib/scylla/commitlog
+
+  scylla-node-3:
+    name: scylla-node-3
+    image: scylladb/scylla
+    command: --memory 1G --seeds scylla-node-1 --smp 1 --listen-addres scylla-node-3
+    volumes:
+    - data-node-3:/var/lib/scylla/data
+    - commit-node-3:/var/lib/scylla/commitlog
+
+#  scylla-control-node:
+#    image: scylladb/scylla-management
+
+#  metrics-node:
+#    image: scylladb/scylla-monitoring
